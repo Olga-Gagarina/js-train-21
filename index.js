@@ -312,6 +312,27 @@ class Band {
  * | date        |  Date      |
  */
 class Performance {
+  #band = Band;
+  #location = "";
+  #date= Date;
+  constructor(band, location, date){
+    this.#band = band;
+    this.#location = location;
+    this.#date = date;
+
+  }
+  get band(){
+    return this.#band;
+  }
+  get location () {
+    return this.#location;
+  }
+  get date () {
+    return this.#date;
+  }
+  info (){
+    console.log(`Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`)
+  }
   // Об'являємо приватні поля #band; #location; #date;
   // Створюємо конструктор з трьома вхідними параметрами: #band, #location та #date
   // Створюємо getter для #band, що повертає приватну властивість #band
@@ -319,7 +340,10 @@ class Performance {
   // Створюємо getter для #date, що повертає приватну властивість #date
   // Визначаємо метод info(), що виводить рядок в консоль `Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`
 }
-
+// const band = new Band({ name: "Гурт XYZ", members: [] });
+const performanceDate = new Date("2023-12-31");
+// const performance = new Performance(band, "Концертна зала", performanceDate);
+// performance.info();
 /*
  * Клас: Concert
  * ---------------------------
@@ -331,6 +355,21 @@ class Performance {
  * | ticketPrice |  number    |
  */
 class Concert extends Performance {
+  #ticketPrice = 0;
+  constructor(band, location, date, ticketPrice){
+    super(band, location, date);
+    this.#ticketPrice = ticketPrice;
+  }
+  get ticketPrice() {
+ return this.#ticketPrice;
+  }
+  set ticketPrice(NewTicketPrice) {
+    return this.#ticketPrice = NewTicketPrice;
+
+  }
+  info(){
+     console.log (`Гурт ${super.band.name} виступить в ${super.location} ${super.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`);
+  }
   // Об'являємо приватні поля #ticketPrice;
   // Створюємо конструктор з чотирма вхідними параметрами: #band, #location, #date та #ticketPrice
   // використання super для виклику конструктора базового класу
@@ -348,6 +387,28 @@ class Concert extends Performance {
  * | band        |  string    |
  */
 class Vocalist {
+  #name = "";
+  #band = "";
+  constructor(name,band){
+    this.#name = name;
+    this.#band = band;
+
+  }
+  get name (){
+    return this.#name;
+  }
+  get band(){
+    return this.#band;
+  }
+  set name (newName) {
+    this.#name = newName;
+  }
+  set band (newBand){
+    this.#band = newBand;
+  }
+  info() {
+    console.log(`Вокаліст ${this.name} є членом гурту ${this.band}`);
+  }
   // Об'являємо приватні поля #name; #band;
   // Створюємо конструктор з двома вхідними параметрами: #name та #band
   // Створюємо getter для #name, що повертає приватну властивість #name
@@ -366,6 +427,19 @@ class Vocalist {
  * | #songs       |  array     |
  */
 class SongWriter {
+  #songs = [];
+  constructor(songs){
+    this.#songs = songs;
+  }
+  get songs() {
+    return this.#songs;
+  }
+  set songs ( newSongs) {
+    this.#songs = newSongs;
+  }
+  info() {
+    console.log( `Написав ${this.songs.length} пісень`);
+  }
   // Об'являємо приватні поля #songs;
   // Створюємо конструктор з одним вхідним параметром: #songs
   // Створюємо getter для #songs, що повертає приватну властивість #songs
@@ -384,7 +458,10 @@ class SongWriter {
  * | songs       |  array     |
  */
 
-class LeadSinger extends Vocalist {
+class LeadSinger extends Vocalist { 
+  constructor(name, band) {
+    super (name, band);
+  }
   // Створюємо конструктор з двома вхідними параметрами: name, band
   // super(name, band);
 }
@@ -398,6 +475,8 @@ class LeadSinger extends Vocalist {
  * | instrument  | "Guitarist"      |
  */
 
+const musician = new Musician("John", "Guitarist");
+
 /*
  * Створення guitarist екземпляра класу Guitarist
  * ---------------------------------------------------
@@ -407,7 +486,7 @@ class LeadSinger extends Vocalist {
  * | instrument  | "гітара"          |
  * | band        | "Led Zeppelin"    |
  */
-
+const guitarist = new Guitarist("Jimmy Page", "гітара", "Led Zeppelin");
 /*
  * Створення bassist екземпляра класу Bassist
  * ---------------------------------------------------
@@ -418,6 +497,7 @@ class LeadSinger extends Vocalist {
  * | band        | "The Beatles"    |
  */
 
+const bassist = new Bassist("Paul McCartney", "бас-гітара", "The Beatles");
 // Створення band екземпляру класу Band
 /*
  * Створення band екземпляра класу Band
@@ -428,6 +508,9 @@ class LeadSinger extends Vocalist {
  * | members     | [bassist]       |
  */
 
+
+const band = new Band("The Beatles", [bassist]);
+band.addMember(guitarist);
 // Додаємо guitarist до band за допомогою addMember
 
 /*
@@ -439,6 +522,8 @@ class LeadSinger extends Vocalist {
  * | band        | "Queen"           |
  */
 
+
+const vocalist = new Vocalist("Freddie Mercury", "Queen");
 /*
  * Створення songwriter екземпляра класу SongWriter
  * -------------------------------------
@@ -447,6 +532,7 @@ class LeadSinger extends Vocalist {
  * | songs       | ["Yesterday","Hey Jude","Let It Be",]|
  */
 
+const songwriter = new SongWriter(["Yesterday", "Hey Jude", "Let It Be"]);
 // Створення performance екземпляра класу Performance
 /*
  * ------------------------------------------------------
@@ -457,6 +543,10 @@ class LeadSinger extends Vocalist {
  * | date        | new Date('2023-08-01')               |
  */
 
+
+const performance = new Performance(band, "Liverpool", new Date('2023-08-01'));
+
+Object.assign(LeadSinger.prototype, songwriter);
 // використання Object.assign() для успадкування властивостей songwriter для LeadSinger.prototype
 
 /*
@@ -470,6 +560,7 @@ class LeadSinger extends Vocalist {
  * | ticketPrice | 100              |
  */
 
+const concert = new Concert(band, "BBC studios", new Date("1994-07-06"), 100);
 /*
  * Створення leadsinger екземпляра класу LeadSinger
  * -------------------------------------
@@ -480,13 +571,15 @@ class LeadSinger extends Vocalist {
  * | songs       | ["Yesterday","Hey Jude","Let It Be",]|
  */
 
+const leadsinger = new LeadSinger("Mick Jagger", "The Rolling Stones");
 // Методи для тестування розкоментувати після виконня всіх завдань
-// musician.play();
-// guitarist.play();
-// bassist.play();
-// band.playMusic();
-// performance.info();
-// concert.info();
-// vocalist.info();
-// songwriter.info();
-// leadsinger.info();
+
+musician.play();
+guitarist.play();
+bassist.play();
+band.playMusic();
+performance.info();
+concert.info();
+vocalist.info();
+songwriter.info();
+leadsinger.info();
